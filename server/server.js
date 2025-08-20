@@ -10,7 +10,7 @@ app.use(cors()); // Allow all origins
 app.use(express.json());
 
 // Example endpoint: Get stock price
-app.get("/stock/:symbol", async (req, res) => {
+app.get("/api/stock/:symbol", async (req, res) => {
   try {
     const { symbol } = req.params;
     const quote = await yahooFinance.quote(symbol);
@@ -22,7 +22,7 @@ app.get("/stock/:symbol", async (req, res) => {
 });
 
 // Example endpoint: Historical data takes data from period1 to today
-app.get("/history/:symbol", async (req, res) => {
+app.get("/api/history/:symbol", async (req, res) => {
   try {
     const { symbol } = req.params;
     const history = await yahooFinance.historical(symbol, {
@@ -36,7 +36,7 @@ app.get("/history/:symbol", async (req, res) => {
   }
 });
 // endpoint to search for stocks
-app.get('/search', async (req, res) => {
+app.get('/api/search', async (req, res) => {
   try {
     const { query } = req.query;
     const results = await yahooFinance.search(query);
@@ -48,7 +48,7 @@ app.get('/search', async (req, res) => {
 });
 
 // Get detailed quote (including additional info)
-app.get('/stock/:symbol/details', async (req, res) => {
+app.get('api/stock/:symbol/details', async (req, res) => {
   try {
     const { symbol } = req.params;
     const [quote, module] = await Promise.all([

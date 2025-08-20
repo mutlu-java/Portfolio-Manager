@@ -1,22 +1,26 @@
 import { useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import Chart from './Chart';
-import FinancialMetrics from "./FinancialMetrics";
-import SearchBar from './SearchBar';
+import Chart from '../components/Chart.jsx';
+import FinancialMetrics from "../components/FinancialMetrics.jsx";
+import StockSearch from "../components/StockSearch.jsx";
+import { Volume } from "lucide-react";
+//import VolumeChart from "../VolumeChart";
 
 function StockPrice() {
   const [symbol, setSymbol] = useState("AAPL"); // Default symbol can be set here
   const [currentData, setCurrentData] = useState(null);
   const [historicalData, setHistoricalData] = useState(null);
 
+
+
   useEffect(() => {
     // Fetch current price
-    fetch(`http://localhost:5000/stock/${symbol}`)
+    fetch(`http://localhost:5000/api/stock/${symbol}`)
       .then(res => res.json())
       .then(setCurrentData);
 
     // Fetch historical data
-    fetch(`http://localhost:5000/history/${symbol}`)
+    fetch(`http://localhost:5000/api/history/${symbol}`)
       .then(res => res.json())
       .then(data => {
         const formattedData = data.map(item => ({
@@ -27,12 +31,18 @@ function StockPrice() {
       });
   }, [symbol]);
 
+    const handleStockSelection = (stock) => {
+    setSymbol(stock.symbol);}
+
   return (
     <div>
-     <SearchBar onSearch={setSymbol} />
+     <StockSearch onStockSelect={handleStockSelection} />
+    
       <div>
-        {currentData ? (
+        {currentData ? ( <div>
           <p>{symbol}: {currentData.regularMarketPrice} {currentData.currency}</p>
+         
+        </div>
         ) : (
           <p>Loading current price...</p>
         )}
@@ -41,17 +51,19 @@ function StockPrice() {
       <div style={{ marginTop: '20px' }}>
         {historicalData ? (
           <Chart data={historicalData} />
+          
         ) : (
           <p>Loading historical data...</p>
         )}
       </div>
+
 
        {currentData ? (
           <FinancialMetrics data={currentData} />
         ) : (
           <p>Loading Financial Metrics</p>
         )}
-      
+
 
     </div>
   );

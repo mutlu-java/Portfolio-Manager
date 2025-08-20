@@ -2,8 +2,8 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import StockPrice from './StockPrice.jsx'
-import Portfolio from './Portfolio.jsx'
+import StockPrice from './views/StockPrice.jsx'
+import Portfolio from './views/Portfolio.jsx'
 import Navbar from './Navbar.jsx'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 function App() {

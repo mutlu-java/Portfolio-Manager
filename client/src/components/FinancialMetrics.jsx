@@ -30,11 +30,11 @@ const FinancialMetrics = ({ data }) => {
         />
         <MetricCard 
           label="Market Cap" 
-          value={data.marketCap ? `$${data.marketCap}` : '--'} 
+          value={data.marketCap ? ` ${data.currency} ${data.marketCap}` : '--'} 
         />
         <MetricCard 
           label=" Forward EPS" 
-          value={data.forwardEps ? `$${data.forwardEps}` : '--'} 
+          value={data.forwardEps ? `${data.currency}  ${data.forwardEps}` : '--'} 
         />
         <MetricCard 
           label="Volume" 
@@ -42,11 +42,11 @@ const FinancialMetrics = ({ data }) => {
         />
         <MetricCard 
           label="52W High" 
-          value={data.fiftyTwoWeekHigh ? `$${data.fiftyTwoWeekHigh}` : '--'} 
+          value={data.fiftyTwoWeekHigh ? `${data.currency} ${data.fiftyTwoWeekHigh}` : '--'} 
         />
         <MetricCard 
           label="52W Low" 
-          value={data.fiftyTwoWeekHigh? `$${data.fiftyTwoWeekLow}` : '--'} 
+          value={data.fiftyTwoWeekHigh? `${data.currency} ${data.fiftyTwoWeekLow}` : '--'} 
         />
       </div>
     </div>

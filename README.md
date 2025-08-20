@@ -1,9 +1,16 @@
 # Stock Price Visualization App
 
-This application fetches and visualizes stock price data using Yahoo Finance API. It consists of a Node.js/Express backend and a React frontend with Recharts for data visualization.
+This application fetches and visualizes and fetches important  stock price data using Yahoo Finance API. It consists of a Node.js/Express backend and a React frontend with Recharts for data visualization.
+You can create your portfolio and can monitor your portfolio's worth.
+
 ## To Do
-- Search Bar api connection- currently functions well but needs an improvement
-- Portfolio Component
+-Learn useMemo to prevent instant loss of data and apply in components
+-Create a Portfolio holder component
+-Apply Efficient Frontier for selected stocks and visualize stock allocations
+
+
+- Search Bar api connection- currently functions well but needs an improvement/ done
+- Portfolio Component/ done
 
 
 ## Project Structure
@@ -70,9 +77,10 @@ The client application will start running on http://localhost:5173
 
 ## API Endpoints
 
-- `GET /stock/:symbol` - Get current stock price and financial metrics' data
-- `GET /history/:symbol` - Get historical stock data of selected stock
-
+- `GET /api/stock/:symbol` - Get current stock price and financial metrics' data
+- `GET /api/history/:symbol` - Get historical stock data of selected stock
+- `GET /api/stock/BA/details` - Get detailed  stock data of selected stock 
+- `GET /api/search` - Get stocks that matches search query
 
 ## Technologies Used
 
@@ -85,7 +93,7 @@ The client application will start running on http://localhost:5173
 ### Frontend
 - React
 - Vite
-- Recharts
+- Recharts 
 
 
 
