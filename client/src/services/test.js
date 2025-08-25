@@ -64,7 +64,7 @@ async function calculateMetrics(symbol) {
     }
 }
 // Example usage 
-calculateMetrics('SISE.IS');
+calculateMetrics('THYAO.IS');
 
 console.log("Fetching correlation matrix for selected tickers...");
 

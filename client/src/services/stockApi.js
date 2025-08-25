@@ -85,24 +85,25 @@ export const getStockDetails = async (symbol) => {
     if (!response.ok) {
       throw new Error(data.error || 'Failed to fetch stock details');
     }
+     return data;
     
-    return {
-      quote: {
-        price: data.quote.regularMarketPrice,
-        change: data.quote.regularMarketChange,
-        changePercent: data.quote.regularMarketChangePercent,
-        volume: data.quote.regularMarketVolume
-      },
-      financialData: {
-        marketCap: data.financialData.marketCap,
-        eps: data.financialData.eps,
-        peRatio: data.financialData.peRatio,
-        pbRatio: data.financialData.priceToBook,
-        dividendYield: data.summaryDetail.dividendYield,
-        high52Week: data.summaryDetail.fiftyTwoWeekHigh,
-        low52Week: data.summaryDetail.fiftyTwoWeekLow
-      }
-    };
+    // return {
+    //   quote: {
+    //     price: data.quote.regularMarketPrice,
+    //     change: data.quote.regularMarketChange,
+    //     changePercent: data.quote.regularMarketChangePercent,
+    //     volume: data.quote.regularMarketVolume
+    //   },
+    //   financialData: {
+    //     marketCap: data.financialData.marketCap,
+    //     eps: data.financialData.eps,
+    //     peRatio: data.financialData.peRatio,
+    //     pbRatio: data.financialData.priceToBook,
+    //     dividendYield: data.summaryDetail.dividendYield,
+    //     high52Week: data.summaryDetail.fiftyTwoWeekHigh,
+    //     low52Week: data.summaryDetail.fiftyTwoWeekLow
+    //   }
+    // };
   } catch (error) {
     console.error('Error in getStockDetails:', error);
     throw error;

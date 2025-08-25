@@ -15,38 +15,42 @@ const FinancialMetrics = ({ data }) => {
         <Calculator className="mr-2" />
         Financial Metrics
       </h3>
+      {/* current market */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <MetricCard 
           label="P/E Ratio" 
-          value={data.peRatio || '--'} 
+          value={ parseFloat(data.financialData.currentPrice / data.keyStatistics.trailingEps).toFixed(2) || '--'} 
         />
         <MetricCard 
           label="P/B Ratio" 
-          value={data.pbRatio || '--'} 
+          value={data.keyStatistics.priceToBook ? `${data.keyStatistics.priceToBook}` : '--'}
         />
         <MetricCard 
           label="Dividend Yield" 
-          value={data.dividendYield ? `${data.dividendYield}%` : '--'} 
+          value={data.quote.dividendYield ? `${data.quote.dividendYield}%` : '--'} 
         />
         <MetricCard 
           label="Market Cap" 
-          value={data.marketCap ? ` ${data.currency} ${data.marketCap}` : '--'} 
+          value={data.quote.marketCap ? ` ${data.financialData.financialCurrency} ${data.quote.marketCap}` : '--'} 
         />
         <MetricCard 
-          label=" Forward EPS" 
-          value={data.forwardEps ? `${data.currency}  ${data.forwardEps}` : '--'} 
+          label="EPS" 
+          value={data.keyStatistics.trailingEps ? `${data.financialData.financialCurrency} 
+           ${data.keyStatistics.trailingEps}` : '--'} 
         />
         <MetricCard 
           label="Volume" 
-          value={data.regularMarketVolume || '--'} 
+          value={  data.quote.regularMarketVolume ? ` ${data.financialData.financialCurrency} 
+          ${data.quote.regularMarketVolume}` : '--'} 
         />
         <MetricCard 
           label="52W High" 
-          value={data.fiftyTwoWeekHigh ? `${data.currency} ${data.fiftyTwoWeekHigh}` : '--'} 
+          value={data.quote.fiftyTwoWeekHigh ? ` ${data.financialData.financialCurrency}  
+          ${data.quote.fiftyTwoWeekHigh}` : '--'} 
         />
         <MetricCard 
           label="52W Low" 
-          value={data.fiftyTwoWeekHigh? `${data.currency} ${data.fiftyTwoWeekLow}` : '--'} 
+          value={data.quote.fiftyTwoWeekHigh? ` ${data.financialData.financialCurrency}  ${data.quote.fiftyTwoWeekLow}` : '--'} 
         />
       </div>
     </div>

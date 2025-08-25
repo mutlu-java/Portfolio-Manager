@@ -22,19 +22,46 @@ app.get("/api/stock/:symbol", async (req, res) => {
 });
 
 // Example endpoint: Historical data takes data from period1 to today
-app.get("/api/history/:symbol", async (req, res) => {
+// app.get("/api/history/:symbol", async (req, res) => {
+//   try {
+//     const { symbol } = req.params;
+//     const history = await yahooFinance.historical(symbol, {
+//       period1: "2020-01-01",
+//       interval: "1d",
+//     });
+//     res.json(history);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Error fetching historical data" });
+//   }
+// });
+
+app.get("/api/stock/:symbol/history", async (req, res) => {
   try {
     const { symbol } = req.params;
+    const { startDate, endDate } = req.query; // get query parameters
+
+    if (!startDate || !endDate) {
+      return res.status(400).json({ error: "startDate and endDate are required" });
+    }
+
+    // Convert dates to UNIX timestamp (in seconds) since yahoo-finance2 expects timestamps
+    const period1 = Math.floor(new Date(startDate).getTime() / 1000);
+    const period2 = Math.floor(new Date(endDate).getTime() / 1000);
+
     const history = await yahooFinance.historical(symbol, {
-      period1: "2020-01-01",
+      period1,
+      period2,
       interval: "1d",
     });
+
     res.json(history);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error fetching historical data" });
   }
 });
+
 // endpoint to search for stocks
 app.get('/api/search', async (req, res) => {
   try {
@@ -48,7 +75,7 @@ app.get('/api/search', async (req, res) => {
 });
 
 // Get detailed quote (including additional info)
-app.get('api/stock/:symbol/details', async (req, res) => {
+app.get('/api/stock/:symbol/details', async (req, res) => {
   try {
     const { symbol } = req.params;
     const [quote, module] = await Promise.all([

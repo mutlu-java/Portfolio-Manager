@@ -4,12 +4,18 @@ import Chart from '../components/Chart.jsx';
 import FinancialMetrics from "../components/FinancialMetrics.jsx";
 import StockSearch from "../components/StockSearch.jsx";
 import { Volume } from "lucide-react";
+import{getStockDetails, getHistoricalData} from "../services/stockApi.js";
 //import VolumeChart from "../VolumeChart";
 
 function StockPrice() {
   const [symbol, setSymbol] = useState("AAPL"); // Default symbol can be set here
+  // state to hold current price and historical data
   const [currentData, setCurrentData] = useState(null);
   const [historicalData, setHistoricalData] = useState(null);
+  //
+  const [detailedData, setDetailedData] = useState(null);
+  const[startDate, setStartDate] = useState('2025-01-01');
+  const[endDate, setEndDate] = useState(new Date().toISOString().split("T")[0]); // today's date
 
 
 
@@ -20,15 +26,18 @@ function StockPrice() {
       .then(setCurrentData);
 
     // Fetch historical data
-    fetch(`http://localhost:5000/api/history/${symbol}`)
-      .then(res => res.json())
-      .then(data => {
+
+      getHistoricalData(symbol,startDate,endDate) .then(data => {
         const formattedData = data.map(item => ({
           date: new Date(item.date).toLocaleDateString(),
           price: item.close
         }));
         setHistoricalData(formattedData);
-      });
+      })
+
+      getStockDetails(symbol).then(setDetailedData);
+
+      
   }, [symbol]);
 
     const handleStockSelection = (stock) => {
@@ -58,8 +67,8 @@ function StockPrice() {
       </div>
 
 
-       {currentData ? (
-          <FinancialMetrics data={currentData} />
+       {detailedData ? (
+          <FinancialMetrics data={detailedData} />
         ) : (
           <p>Loading Financial Metrics</p>
         )}

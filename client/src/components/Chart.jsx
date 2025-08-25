@@ -3,6 +3,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend
 } from 'recharts';
 function Chart({ data }) {
   return (<>
+ 
   
    <LineChart
       width={800}
