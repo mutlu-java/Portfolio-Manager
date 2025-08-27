@@ -5,6 +5,7 @@ import './App.css'
 import StockPrice from './views/StockPrice.jsx'
 import Portfolio from './views/Portfolio.jsx'
 import Navbar from './Navbar.jsx'
+import EfficientFrontier from './views/EfficientFrontier.jsx'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 function App() {
   const [count, setCount] = useState(0)
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<StockPrice />} />
           <Route path="/dashboard" element={<StockPrice  />} />
           <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/efficient-frontier" element={<EfficientFrontier />} />
         </Routes>
       </div>
     </Router>

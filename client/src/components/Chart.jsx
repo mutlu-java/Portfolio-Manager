@@ -1,7 +1,7 @@
 import react from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend
 } from 'recharts';
-function Chart({ data }) {
+function Chart({ data, regressionLine }) {
   return (<>
  
   
@@ -24,6 +24,17 @@ function Chart({ data }) {
         dot={false}
         activeDot={{ r: 6, fill: '#3b82f6', stroke: '#ffffff', strokeWidth: 2 }}
       />
+      {regressionLine && (
+        <Line
+          type="monotone"
+          dataKey="regression"
+          stroke="#82ca9d"
+          name="Regression Line"
+          dot={false}
+          activeDot={{ r: 6, fill: '#10b981', stroke: '#ffffff', strokeWidth: 2 }}
+        />
+      )}
+      
     </LineChart>
   </>
    

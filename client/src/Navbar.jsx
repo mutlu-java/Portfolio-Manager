@@ -35,6 +35,18 @@ function Navbar() {
           >
             Portfolios
           </a>
+          
+          <a
+            href="/efficient-frontier"
+            className={`px-4 py-2 rounded-lg ${
+              currentPath === '/efficient-frontier'
+                ? 'bg-blue-100 text-blue-700'
+                : 'text-gray-600 hover:bg-gray-100'
+            }`}
+          >
+            Efficient Frontier
+          </a>
+
         </div>
       </div>
     </div>

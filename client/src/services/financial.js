@@ -1,22 +1,22 @@
 // volatility and expected return 
 // This script fetches historical stock data, calculates expected returns and volatility
 // for a given stock symbol, and logs the results to the console.
+import { getHistoricalData } from "./stockApi.js";
+// import yahooFinance from "yahoo-finance2";
 
-import yahooFinance from "yahoo-finance2";
-
-async function getHistoricalData(symbol) {
-  try {
-    const history = await yahooFinance.historical(symbol, {
-      period1: "2023-01-01",
-      period2: "2025-08-16",
-      interval: "1d",
-    });
-    return history;
-  } catch (error) {
-    console.error('Error fetching historical data:', error);
-    throw error;
-  }
-}
+// async function getHistoricalData(symbol) {
+//   try {
+//     const history = await yahooFinance.historical(symbol, {
+//       period1: "2023-01-01",
+//       period2: "2024-01-01",
+//       interval: "1d",
+//     });
+//     return history;
+//   } catch (error) {
+//     console.error('Error fetching historical data:', error);
+//     throw error;
+//   }
+// }
 
 function calculateReturns(prices) {
   let returns = [];
@@ -39,11 +39,13 @@ function volatility(returns) {
 
     
     // calculates the expected return and volatility for a given stock symbol
-async function calculateMetrics(symbol) {
+ export async function calculateMetrics(symbol,startDate="2020-01-01", endDate="2025-01-01") {
     try {
-        const data = await getHistoricalData(symbol);
+        const data = await getHistoricalData(symbol, startDate, endDate);
         const prices = data.map(item => item.adjClose);
+        
         let returns = calculateReturns(prices);
+        console.log("returns:", returns);
         let expRet = expectedReturn(returns);
         let vol = volatility(returns);
         console.log("number of data points:", prices.length);
@@ -64,7 +66,7 @@ async function calculateMetrics(symbol) {
     }
 }
 // Example usage 
-calculateMetrics('THYAO.IS');
+
 
 console.log("Fetching correlation matrix for selected tickers...");
 

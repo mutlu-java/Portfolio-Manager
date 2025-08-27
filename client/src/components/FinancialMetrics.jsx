@@ -52,6 +52,12 @@ const FinancialMetrics = ({ data }) => {
           label="52W Low" 
           value={data.quote.fiftyTwoWeekHigh? ` ${data.financialData.financialCurrency}  ${data.quote.fiftyTwoWeekLow}` : '--'} 
         />
+
+          <MetricCard 
+            label="Beta" 
+            value={data.summaryDetail.beta ? `${data.summaryDetail.beta}` : '--'}
+          />
+        
       </div>
     </div>
   );
