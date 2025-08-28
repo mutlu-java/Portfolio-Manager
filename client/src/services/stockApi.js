@@ -1,4 +1,25 @@
 const API_BASE_URL = 'http://localhost:5000/api';
+//
+export const getDailyGainersXU100 = async (symbol) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/dailyGainers`);
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.error || 'Failed to fetch daily gainers');
+    }
+    return data;
+  } catch (error) {
+    console.error('Error in getDailies:', error);
+    throw error;
+  }
+};
+
+  // example response item:{
+  //   "symbol": "KCHOL.IS",
+  //   "name": "KOC HOLDING",
+  //   "price": 184.8,
+  //   "changePercent": -0.53821313
+  // }
 
 // Get current stock quote
 export const getStockQuote = async (symbol) => {
@@ -19,7 +40,13 @@ export const getStockQuote = async (symbol) => {
       high: data.regularMarketDayHigh,
       low: data.regularMarketDayLow,
       open: data.regularMarketOpen,
-      previousClose: data.regularMarketPreviousClose
+      previousClose: data.regularMarketPreviousClose,
+      quoteSourceName: data.quoteSourceName,
+      currency: data.currency,
+      exchange: data.exchange,
+      fullExchangeName: data.fullExchangeName,
+      longName: data.longName,
+      shortName: data.shortName
     };
   } catch (error) {
     console.error('Error in getStockQuote:', error);
@@ -38,20 +65,13 @@ export const getHistoricalData = async (symbol, startDate, endDate) => {
       throw new Error(data.error || 'Failed to fetch historical data');
     }
     return data;
-    // example response structure is below i prefer to return the data as is
-    // return data.map(item => ({
-    //   date: item.date,
-    //   price: item.close,
-    //   open: item.open,
-    //   high: item.high,
-    //   low: item.low,
-    //   volume: item.volume
-    // }));
+   
   } catch (error) {
     console.error('Error in getHistoricalData:', error);
     throw error;
   }
 };
+
 
 // Search for stocks
 export const searchStocks = async (query) => {

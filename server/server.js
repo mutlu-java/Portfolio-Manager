@@ -35,6 +35,29 @@ app.get("/api/stock/:symbol", async (req, res) => {
 //     res.status(500).json({ error: "Error fetching historical data" });
 //   }
 // });
+const bist100 = [
+  "ISCTR.IS","GARAN.IS","AKBNK.IS","YKBNK.IS","HALKB.IS",
+  "KCHOL.IS","SAHOL.IS","SISE.IS","ASELS.IS","THYAO.IS"
+  // ... tüm BIST100 sembollerini ekle
+];
+
+app.get("/api/dailyGainers", async (req, res) => {
+  try {
+    const results = await Promise.all(bist100.map(t => yahooFinance.quote(t)));
+    const sorted = results
+      .map(r => ({
+        symbol: r.symbol,
+        name: r.shortName,
+        price: r.regularMarketPrice,
+        changePercent: r.regularMarketChangePercent
+      }))
+      .sort((a, b) => b.changePercent - a.changePercent);
+
+    res.json(sorted.slice(0, 10)); // ilk 10 gainer
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 app.get("/api/stock/:symbol/history", async (req, res) => {
   try {

@@ -13,7 +13,7 @@ const[metrics, setMetrics] = useState([]);
 
 
  const handleStockSelection =async  (stock) => {
-    const stockMetrics = await calculateMetrics(stock.symbol,"2020-01-01","2025-01-01");
+    const stockMetrics = await calculateMetrics(stock.symbol,"2020-01-02","2024-12-31");
     setMetrics([...metrics, { symbol: stock.symbol, ...stockMetrics }]);
     
     console.log(`Metrics for ${stock.symbol}:`, metrics);  

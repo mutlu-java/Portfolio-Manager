@@ -17,7 +17,7 @@ const StockForm = ({
   };
 
   return (
-    <div className="mb-4 p-4 border rounded bg-gray-50 flex gap-4 items-end">
+    <div className="mb-4 p-4  rounded shadow-amber-50 bg-gray-50 flex gap-4 items-end">
       <div className="flex flex-col">
         <span className="text-sm font-medium text-gray-700 mb-2">
           Selected: {selectedStock?.symbol} - {selectedStock?.name}

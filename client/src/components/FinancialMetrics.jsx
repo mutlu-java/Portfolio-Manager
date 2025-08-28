@@ -1,16 +1,22 @@
 import React from 'react';
 import { Calculator } from 'lucide-react';
-
+// border botttom dashed lighgray
 const MetricCard = ({ label, value }) => (
-  <div className="bg-gray-50 p-4 rounded-lg transition-all duration-200 hover:shadow-md">
-    <div className="text-sm text-gray-600">{label}</div>
-    <div className="text-xl font-bold text-gray-900">{value}</div>
+  <div className="flex justify-between border-b border-dashed border-gray-200">
+    <span className="text-sm text-gray-600">{label}</span>
+    <span className="text-sm font-medium">{value}</span>
   </div>
 );
 
+{/* <div className="flex justify-between">
+              <span className="text-sm text-gray-600">Previous Close</span>
+              <span className="text-sm font-medium">15.11</span>
+            </div> */}
+
 const FinancialMetrics = ({ data }) => {
-  return (
-    <div className="bg-white rounded-lg shadow-sm p-6">
+  return (<>
+
+    <div className="bg-white rounded-lg shadow-sm p-6 max-w-7xl">
       <h3 className="text-lg font-semibold mb-4 flex items-center">
         <Calculator className="mr-2" />
         Financial Metrics
@@ -58,8 +64,14 @@ const FinancialMetrics = ({ data }) => {
             value={data.summaryDetail.beta ? `${data.summaryDetail.beta}` : '--'}
           />
         
+
       </div>
-    </div>
+      </div>
+
+     
+      
+    
+    </>
   );
 };
 

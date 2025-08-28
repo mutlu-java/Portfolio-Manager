@@ -4,20 +4,23 @@ import Chart from '../components/Chart.jsx';
 import FinancialMetrics from "../components/FinancialMetrics.jsx";
 import StockSearch from "../components/StockSearch.jsx";
 import { Volume } from "lucide-react";
-import{getStockDetails, getHistoricalData} from "../services/stockApi.js";
+import{getStockDetails, getHistoricalData, getStockQuote} from "../services/stockApi.js";
 //import VolumeChart from "../VolumeChart";
 
+
 function StockPrice() {
-  const [symbol, setSymbol] = useState("AAPL"); // Default symbol can be set here
+  const [symbol, setSymbol] = useState("ISCTR.IS"); // Default symbol can be set here
   // state to hold current price and historical data
   const [currentData, setCurrentData] = useState(null);
   const [historicalData, setHistoricalData] = useState(null);
+  const [quoteData,setQuoteData] = useState();
   //
   const [detailedData, setDetailedData] = useState(null);
   const[startDate, setStartDate] = useState('2025-01-01');
   const[endDate, setEndDate] = useState(new Date().toISOString().split("T")[0]); // today's date
 
-
+ 
+  
 
   useEffect(() => {
     // Fetch current price
@@ -25,8 +28,9 @@ function StockPrice() {
       .then(res => res.json())
       .then(setCurrentData);
 
-    // Fetch historical data
+    
 
+    // Fetch historical data for chart
       getHistoricalData(symbol,startDate,endDate) .then(data => {
         const formattedData = data.map(item => ({
           date: new Date(item.date).toLocaleDateString(),
@@ -35,36 +39,44 @@ function StockPrice() {
         setHistoricalData(formattedData);
       })
 
+     // for financial metrics
       getStockDetails(symbol).then(setDetailedData);
+      getStockQuote(symbol).then(setQuoteData)
 
       
-  }, [symbol]);
+  }, [symbol,startDate,endDate]);
 
     const handleStockSelection = (stock) => {
     setSymbol(stock.symbol);}
+
+    const handleComparsion1Selection = (stock) => {
+    setComparsion1(stock.symbol);}
+
 
   return (
     <div>
      <StockSearch onStockSelect={handleStockSelection} />
     
       <div>
-        {currentData ? ( <div>
+        {/* {currentData ? ( <div>
           <p>{symbol}: {currentData.regularMarketPrice} {currentData.currency}</p>
          
         </div>
         ) : (
           <p>Loading current price...</p>
-        )}
+        )} */}
       </div>
       
       <div style={{ marginTop: '20px' }}>
-        {historicalData ? (
-          <Chart data={historicalData} />
+        {historicalData && quoteData ? (
+          <Chart data={historicalData} quoteData={quoteData} setStartDate={setStartDate}   />
           
         ) : (
           <p>Loading historical data...</p>
         )}
       </div>
+
+      
 
 
        {detailedData ? (
