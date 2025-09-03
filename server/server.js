@@ -2,7 +2,7 @@
 import express from "express";
 import cors from "cors";
 import yahooFinance from "yahoo-finance2";
-
+import apiRoutes from "./routes/api.js";
 const app = express();
 const PORT = 5000;
 
@@ -10,114 +10,7 @@ app.use(cors()); // Allow all origins
 app.use(express.json());
 
 // Example endpoint: Get stock price
-app.get("/api/stock/:symbol", async (req, res) => {
-  try {
-    const { symbol } = req.params;
-    const quote = await yahooFinance.quote(symbol);
-    res.json(quote);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error fetching stock data" });
-  }
-});
+app.use("/api", apiRoutes);
 
-// Example endpoint: Historical data takes data from period1 to today
-// app.get("/api/history/:symbol", async (req, res) => {
-//   try {
-//     const { symbol } = req.params;
-//     const history = await yahooFinance.historical(symbol, {
-//       period1: "2020-01-01",
-//       interval: "1d",
-//     });
-//     res.json(history);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Error fetching historical data" });
-//   }
-// });
-const bist100 = [
-  "ISCTR.IS","GARAN.IS","AKBNK.IS","YKBNK.IS","HALKB.IS",
-  "KCHOL.IS","SAHOL.IS","SISE.IS","ASELS.IS","THYAO.IS"
-  // ... tüm BIST100 sembollerini ekle
-];
-
-app.get("/api/dailyGainers", async (req, res) => {
-  try {
-    const results = await Promise.all(bist100.map(t => yahooFinance.quote(t)));
-    const sorted = results
-      .map(r => ({
-        symbol: r.symbol,
-        name: r.shortName,
-        price: r.regularMarketPrice,
-        changePercent: r.regularMarketChangePercent
-      }))
-      .sort((a, b) => b.changePercent - a.changePercent);
-
-    res.json(sorted.slice(0, 10)); // ilk 10 gainer
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-app.get("/api/stock/:symbol/history", async (req, res) => {
-  try {
-    const { symbol } = req.params;
-    const { startDate, endDate } = req.query; // get query parameters
-
-    if (!startDate || !endDate) {
-      return res.status(400).json({ error: "startDate and endDate are required" });
-    }
-
-    // Convert dates to UNIX timestamp (in seconds) since yahoo-finance2 expects timestamps
-    const period1 = Math.floor(new Date(startDate).getTime() / 1000);
-    const period2 = Math.floor(new Date(endDate).getTime() / 1000);
-
-    const history = await yahooFinance.historical(symbol, {
-      period1,
-      period2,
-      interval: "1d",
-    });
-
-    res.json(history);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error fetching historical data" });
-  }
-});
-
-// endpoint to search for stocks
-app.get('/api/search', async (req, res) => {
-  try {
-    const { query } = req.query;
-    const results = await yahooFinance.search(query);
-    res.json(results);
-  } catch (error) {
-    console.error('Error searching stocks:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Get detailed quote (including additional info)
-app.get('/api/stock/:symbol/details', async (req, res) => {
-  try {
-    const { symbol } = req.params;
-    const [quote, module] = await Promise.all([
-      yahooFinance.quote(symbol),
-      yahooFinance.quoteSummary(symbol, {
-        modules: ['financialData', 'summaryDetail', 'defaultKeyStatistics']
-      })
-    ]);
-
-    res.json({
-      quote,
-      financialData: module.financialData,
-      summaryDetail: module.summaryDetail,
-      keyStatistics: module.defaultKeyStatistics
-    });
-  } catch (error) {
-    console.error('Error fetching stock details:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

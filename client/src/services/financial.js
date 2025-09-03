@@ -45,7 +45,8 @@ function volatility(returns) {
         const prices = data.map(item => item.adjClose);
         
         let returns = calculateReturns(prices);
-        console.log("returns:", returns);
+        console.log("Any NaN in returns?", returns.some(r => isNaN(r))) ;
+        
         let expRet = expectedReturn(returns);
         let vol = volatility(returns);
         console.log("number of data points:", prices.length);
@@ -53,12 +54,15 @@ function volatility(returns) {
         console.log("Expected Annual Return:", (Math.pow(1 + expRet, 252) - 1));
         console.log("Daily Volatility:", vol);
         console.log("Annual Volatility:", vol * Math.sqrt(252));
+       console.log("returns:", returns);
         
         return {
+            symbol: symbol,
             expectedReturn: expRet,
             annualReturn: (Math.pow(1 + expRet, 252) - 1),
             dailyVolatility: vol,
-            annualVolatility: vol * Math.sqrt(252)
+            annualVolatility: vol * Math.sqrt(252),
+            returns: returns
         };
     } catch (error) {
         console.error(`Error calculating metrics for ${symbol}:`, error);

@@ -9,7 +9,7 @@ import { TrendingUp, Plus, Star, BarChart3, Settings } from 'lucide-react';
   function Chart({ data, quoteData, dataSymbol,setStartDate,endDate,compareData1,compareData1Symbol,  }) {
 
 
- const [activeTimeframe, setActiveTimeframe] = useState('1D');
+  const [activeTimeframe, setActiveTimeframe] = useState('YTD');
   const [keyEvents, setKeyEvents] = useState(true);
   const [chartType, setChartType] = useState('Mountain');
 
@@ -47,11 +47,13 @@ import { TrendingUp, Plus, Star, BarChart3, Settings } from 'lucide-react';
         <div className="mt-4">
           <div className="flex items-baseline space-x-3">
             <span className="text-4xl font-light text-gray-900">{quoteData.price}</span>
-            <span className="text-lg text-green-600">{quoteData.change}</span> <span>{quoteData.currency}</span>
-            <span className="text-lg text-green-600">({quoteData.changePercent +" %"} )</span>
+            {/* if quoteData.change is above 0 color green else red */}
+            <span className={quoteData.change>0 ? "text-lg text-green-600": "text-lg text-red-600"}>{quoteData.change.toFixed(2)}</span>
+             {/* <span className='text-xs'>{quoteData.currency}</span> */}
+            <span className={quoteData.changePercent >0 ? "text-lg text-green-600": "text-lg text-red-600" }>({quoteData.changePercent.toFixed(2) +" %"} )</span>
           </div>
           <div className="text-sm text-gray-500 mt-1">
-            At close: 6:10:00 PM GMT+3
+            {}
           </div>
         </div>
       </div>
@@ -242,7 +244,7 @@ import { TrendingUp, Plus, Star, BarChart3, Settings } from 'lucide-react';
     >
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="date"  allowDuplicatedCategory={false}/>
-      <YAxis domain={[0, 'auto']}
+      <YAxis domain={['auto', 'auto']}
        
       />
       <Tooltip />
