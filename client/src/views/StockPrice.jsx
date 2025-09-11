@@ -35,6 +35,7 @@ function StockPrice() {
         const formattedData = data.map(item => ({
           date: new Date(item.date).toLocaleDateString(),
           price: item.close
+          
         }));
         setHistoricalData(formattedData);
       })
